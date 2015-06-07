@@ -20,6 +20,9 @@ function View (config) {
 
 var proto = View.prototype;
 
+/**
+ * Initialize the canvas layering and model
+ */
 proto.init = function () {
   var $canvasContainer = $(this.props.canvasContainerSelector);
 
@@ -80,7 +83,7 @@ proto.setupCanvas = function () {
 };
 
 /**
- * Set listeners for gridCanvas
+ * Set listeners for highlighting and selection
  */
 proto.setCanvasEvents = function () {
   var self = this,

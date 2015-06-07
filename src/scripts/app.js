@@ -4,7 +4,7 @@ var $ = require("jquery"),
   View = require("./View");
 
 $(function () {
-  window.view = new View({
+  new View({
     canvasContainerSelector: ".canvas-container",
     controlContainerSelector: "#controls"
   });
