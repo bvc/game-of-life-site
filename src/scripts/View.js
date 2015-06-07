@@ -9,8 +9,8 @@ function View (config) {
     controlContainerSelector: "",
     width: 700,
     height: 400,
-    rectWidth: 20,
-    rectHeight: 20
+    rectWidth: 10,
+    rectHeight: 10
   };
 
   this.props = $.extend(defaultConfig, config);
@@ -170,10 +170,6 @@ proto.setControlEvents = function () {
   var self = this,
     $play = this.$controls.find(".play"),
     $pause = this.$controls.find(".pause");
-
-  this.$controls.find(".step-backward").click(function () {
-    self.model.stepBackward();
-  });
 
   $play.click(function () {
     $play.prop("disabled", true);

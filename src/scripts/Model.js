@@ -38,11 +38,6 @@ proto.toggleAreaState = function (x, y) {
   this.grid[x][y] = !this.grid[x][y];
 };
 
-proto.stepBackward = function () {
-  // TODO: Step backward
-  this.event(this.grid);
-};
-
 proto.play = function () {
   this.isPlaying = true;
   this.playThrough();
