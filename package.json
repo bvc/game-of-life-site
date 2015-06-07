@@ -16,6 +16,7 @@
   "devDependencies": {
     "browser-sync": "^2.7.0",
     "browserify": "^10.1.0",
+    "browserify-shim": "^3.8.8",
     "del": "^1.1.1",
     "expectations": "^0.4.2",
     "front-matter": "^1.0.0",
@@ -38,7 +39,14 @@
     "yargs": "^3.9.0"
   },
   "dependencies": {
-    "bootstrap": "^3.3.4",
-    "jquery": "^2.1.4"
+    "bootstrap": "^3.3.4"
+  },
+  "browserify": {
+    "transform": [
+      "browserify-shim"
+    ]
+  },
+  "browserify-shim": {
+    "jquery": "global:$"
   }
 }
