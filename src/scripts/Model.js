@@ -54,13 +54,57 @@ proto.pause = function () {
 };
 
 proto.stepForward = function () {
-  // TODO: Step forward
+  this.nextGeneration();
   this.event(this.grid);
 };
 
 proto.reset = function () {
   this.grid = this.createArray(this.config.x, this.config.y);
   this.event(this.grid);
+};
+
+proto.numberOfLiveNeighbors = function (x, y) {
+  var xOffsets = [-1, 0, 1, -1, 1, -1, 0, 1],
+    yOffsets = [-1, -1, -1, 0, 0, 1, 1, 1],
+    numOfLiveCells = 0, len = xOffsets.length,
+    i, neighborX, neighborY;
+
+  for (i = 0; i < len; i++) {
+    neighborX = x + xOffsets[i];
+    neighborY = y + yOffsets[i];
+
+    if (neighborX < 0 || neighborX >= this.config.x || neighborY < 0 || neighborY >= this.config.y) {
+      continue;
+    }
+
+    if (this.grid[neighborX][neighborY]) {
+      numOfLiveCells++;
+    }
+  }
+
+  return numOfLiveCells;
+};
+
+proto.shouldLive = function (currentState, x, y) {
+  if (!currentState) {
+    return this.numberOfLiveNeighbors(x, y) === 3;
+  }
+
+  return ((this.numberOfLiveNeighbors(x, y) === 2) || (this.numberOfLiveNeighbors(x, y) === 3));
+};
+
+proto.nextGeneration = function () {
+  var self = this,
+    grid = this.grid,
+    nextGrid = this.createArray(this.config.x, this.config.y);
+
+  for (var x = 0; x < grid.length; x++) {
+    for (var y = 0; y < grid[0].length; y++) {
+      nextGrid[x][y] = self.shouldLive(grid[x][y], x, y);
+    }
+  }
+
+  self.grid = nextGrid;
 };
 
 proto.playThrough = function () {
@@ -71,10 +115,10 @@ proto.playThrough = function () {
   }
 
   setTimeout(function () {
-    // TODO: Toggle next state change
-    console.log("I'm playing");
+    self.nextGeneration();
+    self.event(self.grid);
     self.playThrough();
-  }, 500);
+  }, 100);
 };
 
 module.exports = Model;
