@@ -42,7 +42,7 @@ proto.init = function () {
 
 /**
  * Event handler to update any views listening to changes
- * @param cb
+ * @param cb - The callback to handle updates
  */
 proto.onAreaStateUpdate = function (cb) {
   this.event = cb;
@@ -88,7 +88,6 @@ proto.pause = function () {
  */
 proto.stepForward = function () {
   this.nextGeneration();
-  this.event(this.grid);
 };
 
 /**
@@ -162,6 +161,7 @@ proto.nextGeneration = function () {
   }
 
   this.grid = nextGrid;
+  this.event(this.grid);
 };
 
 /**
@@ -176,7 +176,6 @@ proto.playThrough = function () {
 
   setTimeout(function () {
     self.nextGeneration();
-    self.event(self.grid);
     self.playThrough();
   }, 100);
 };
