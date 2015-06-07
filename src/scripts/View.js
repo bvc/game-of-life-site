@@ -5,7 +5,7 @@ var $ = require("jquery");
 function View (config) {
   var defaultConfig = {
     canvasContainerSelector: "",
-    width: 400,
+    width: 700,
     height: 400,
     rectWidth: 20,
     rectHeight: 20
@@ -42,13 +42,13 @@ proto.setupCanvas = function () {
   this.canvas.height = this.props.height;
 
   for (x = 0; x <= this.props.width; x += this.props.rectWidth) {
-    context.moveTo(0.5 + x + offset, offset);
-    context.lineTo(0.5 + x + offset, this.props.height + offset);
+    context.moveTo(x + offset, offset);
+    context.lineTo(x + offset, this.props.height + offset);
   }
 
   for (y = 0; y <= this.props.height; y += this.props.rectHeight) {
-    context.moveTo(offset, 0.5 + y + offset);
-    context.lineTo(this.props.width + offset, 0.5 + y + offset);
+    context.moveTo(offset, y + offset);
+    context.lineTo(this.props.width + offset, y + offset);
   }
 
   context.strokeStyle = "black";
