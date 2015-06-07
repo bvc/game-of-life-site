@@ -6,6 +6,7 @@ var $ = require("jquery"),
 function View (config) {
   var defaultConfig = {
     canvasContainerSelector: "",
+    controlContainerSelector: "",
     width: 700,
     height: 400,
     rectWidth: 20,
@@ -30,6 +31,8 @@ proto.init = function () {
   this.$canvasContainer.width(this.props.width);
   this.$canvasContainer.height(this.props.height);
 
+  this.$controls = $(this.props.controlContainerSelector);
+
   this.model = new Model({
     x: this.props.width / this.props.rectWidth,
     y: this.props.height / this.props.rectHeight
@@ -41,7 +44,7 @@ proto.init = function () {
 };
 
 /**
- * Setup the gridCanvas and highlightCanvas layering
+ * Setup the gridCanvas, selectCanvas, and highlightCanvas layering
  */
 proto.setupCanvas = function () {
   var self = this,
@@ -147,7 +150,7 @@ proto.setCanvasEvents = function () {
     highlightArea(getPosition(evt));
   });
 
-  $(this.highlightCanvas).mouseout(function (evt) {
+  $(this.highlightCanvas).mouseout(function () {
     clearOldRect();
   });
 
@@ -164,6 +167,35 @@ proto.setCanvasEvents = function () {
  * Set listeners for the controls
  */
 proto.setControlEvents = function () {
+  var self = this,
+    $play = this.$controls.find(".play"),
+    $pause = this.$controls.find(".pause");
+
+  this.$controls.find(".step-backward").click(function () {
+    self.model.stepBackward();
+  });
+
+  $play.click(function () {
+    $play.prop("disabled", true);
+    $pause.prop("disabled", false);
+
+    self.model.play();
+  });
+
+  $pause.click(function () {
+    $play.prop("disabled", false);
+    $pause.prop("disabled", true);
+
+    self.model.pause();
+  });
+
+  this.$controls.find(".step-forward").click(function () {
+    self.model.stepForward();
+  });
+
+  this.$controls.find(".reset").click(function () {
+    self.model.reset();
+  });
 };
 
 module.exports = View;

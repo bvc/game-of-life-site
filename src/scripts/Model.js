@@ -38,4 +38,43 @@ proto.toggleAreaState = function (x, y) {
   this.grid[x][y] = !this.grid[x][y];
 };
 
+proto.stepBackward = function () {
+  // TODO: Step backward
+  this.event(this.grid);
+};
+
+proto.play = function () {
+  this.isPlaying = true;
+  this.playThrough();
+};
+
+proto.pause = function () {
+  this.isPlaying = false;
+  this.playThrough();
+};
+
+proto.stepForward = function () {
+  // TODO: Step forward
+  this.event(this.grid);
+};
+
+proto.reset = function () {
+  this.grid = this.createArray(this.config.x, this.config.y);
+  this.event(this.grid);
+};
+
+proto.playThrough = function () {
+  var self = this;
+
+  if (!this.isPlaying) {
+    return;
+  }
+
+  setTimeout(function () {
+    // TODO: Toggle next state change
+    console.log("I'm playing");
+    self.playThrough();
+  }, 500);
+};
+
 module.exports = Model;
