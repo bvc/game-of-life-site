@@ -102,7 +102,7 @@ proto.setCanvasEvents = function () {
     oldRect = coor;
   };
 
-  var selectArea = function (coor) {
+  var toggleSelectArea = function (coor) {
     self.model.toggleAreaState(coor.xNum, coor.yNum);
 
     var currentState = self.model.getAreaState(coor.xNum, coor.yNum);
@@ -115,6 +115,19 @@ proto.setCanvasEvents = function () {
     }
   };
 
+  var updateSelectArea = function (grid) {
+    for (var x = 0; x < grid.length; x++) {
+      for (var y = 0; y < grid[0].length; y++) {
+        if (grid[x][y]) {
+          selectCxt.fillStyle = "#000080";
+          selectCxt.fillRect(x * rWidth, y * rHeight, rWidth, rHeight);
+        } else {
+          selectCxt.clearRect(x * rWidth, y * rHeight, rWidth, rHeight);
+        }
+      }
+    }
+  };
+
   var getPosition = function (evt) {
     var rect = self.gridCanvas.getBoundingClientRect(),
       x = evt.clientX - rect.left,
@@ -123,8 +136,8 @@ proto.setCanvasEvents = function () {
       yNum = Math.floor(y / rHeight);
 
     return {
-      xNum: xNum,
-      yNum: yNum,
+      xNum: Math.abs(xNum),
+      yNum: Math.abs(yNum),
       xPos: xNum * rWidth,
       yPos: yNum * rHeight
     };
@@ -139,11 +152,11 @@ proto.setCanvasEvents = function () {
   });
 
   $(this.highlightCanvas).click(function (evt) {
-    selectArea(getPosition(evt));
+    toggleSelectArea(getPosition(evt));
   });
 
   self.model.onAreaStateUpdate(function (grid) {
-    // Toggle the correct ones
+    updateSelectArea(grid);
   });
 };
 

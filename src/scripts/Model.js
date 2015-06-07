@@ -27,7 +27,7 @@ proto.init = function () {
 };
 
 proto.onAreaStateUpdate = function (cb) {
-  cb(this.grid);
+  this.event = cb;
 };
 
 proto.getAreaState = function (x, y) {
