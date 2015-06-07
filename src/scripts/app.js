@@ -5,6 +5,6 @@ var $ = require("jquery"),
 
 $(function () {
   new View({
-    canvasContainerSelector: "#main"
+    canvasContainerSelector: ".canvas-container"
   });
 });

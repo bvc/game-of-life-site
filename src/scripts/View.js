@@ -26,74 +26,131 @@ proto.init = function () {
     throw new Error("The element doesn't exist");
   }
 
-  this.canvas = document.createElement("canvas");
-  $canvasContainer.append(this.canvas);
+  this.$canvasContainer = $canvasContainer;
+  this.$canvasContainer.width(this.props.width);
+  this.$canvasContainer.height(this.props.height);
 
-  this.model = new Model();
+  this.model = new Model({
+    x: this.props.width / this.props.rectWidth,
+    y: this.props.height / this.props.rectHeight
+  });
 
   this.setupCanvas();
-  this.setCanvasControls();
-  this.setControls();
+  this.setCanvasEvents();
+  this.setControlEvents();
 };
 
 /**
- * Setup the canvas
+ * Setup the gridCanvas and highlightCanvas layering
  */
 proto.setupCanvas = function () {
-  var context = this.canvas.getContext("2d"),
-    x, y, offset = 0;
+  var self = this,
+    cxt, x, y, offset = 0;
 
-  this.canvas.width = this.props.width;
-  this.canvas.height = this.props.height;
+  ["gridCanvas", "selectCanvas", "highlightCanvas"].forEach(function (canvasName, idx) {
+    var canvasEl = self[canvasName] = document.createElement("canvas");
+
+    canvasEl.width = self.props.width;
+    canvasEl.height = self.props.height;
+    canvasEl.style.position = "absolute";
+    canvasEl.style.left = 0;
+    canvasEl.style.top = 0;
+    canvasEl.style.zIndex = idx;
+
+    self.$canvasContainer.append(canvasEl);
+  });
+
+  cxt = this.gridCanvas.getContext("2d");
 
   for (x = 0; x <= this.props.width; x += this.props.rectWidth) {
-    context.moveTo(x + offset, offset);
-    context.lineTo(x + offset, this.props.height + offset);
+    cxt.moveTo(x + offset, offset);
+    cxt.lineTo(x + offset, this.props.height + offset);
   }
 
   for (y = 0; y <= this.props.height; y += this.props.rectHeight) {
-    context.moveTo(offset, y + offset);
-    context.lineTo(this.props.width + offset, y + offset);
+    cxt.moveTo(offset, y + offset);
+    cxt.lineTo(this.props.width + offset, y + offset);
   }
 
-  context.strokeStyle = "black";
-  context.stroke();
+  cxt.strokeStyle = "black";
+  cxt.stroke();
 };
 
 /**
- * Set listeners for canvas
+ * Set listeners for gridCanvas
  */
-proto.setCanvasControls = function () {
-  var self = this;
+proto.setCanvasEvents = function () {
+  var self = this,
+    hightlightCxt = self.highlightCanvas.getContext("2d"),
+    selectCxt = self.selectCanvas.getContext("2d"),
+    rWidth = self.props.rectWidth,
+    rHeight = self.props.rectHeight,
+    oldRect;
 
-  function getPosition(evt) {
-    var rect = self.canvas.getBoundingClientRect();
+  var clearOldRect = function () {
+    if (oldRect) {
+      hightlightCxt.clearRect(oldRect.xPos, oldRect.yPos, rWidth, rHeight);
+    }
+  };
+
+  var highlightArea = function (coor) {
+    clearOldRect();
+
+    hightlightCxt.fillStyle = "#7ec0ee";
+    hightlightCxt.fillRect(coor.xPos, coor.yPos, rWidth, rHeight);
+
+    oldRect = coor;
+  };
+
+  var selectArea = function (coor) {
+    self.model.toggleAreaState(coor.xNum, coor.yNum);
+
+    var currentState = self.model.getAreaState(coor.xNum, coor.yNum);
+
+    if (!!currentState) {
+      selectCxt.fillStyle = "#000080";
+      selectCxt.fillRect(coor.xPos, coor.yPos, rWidth, rHeight);
+    } else {
+      selectCxt.clearRect(coor.xPos, coor.yPos, rWidth, rHeight);
+    }
+  };
+
+  var getPosition = function (evt) {
+    var rect = self.gridCanvas.getBoundingClientRect(),
+      x = evt.clientX - rect.left,
+      y = evt.clientY - rect.top,
+      xNum = Math.floor(x / rWidth),
+      yNum = Math.floor(y / rHeight);
 
     return {
-      x: evt.clientX - rect.left,
-      y: evt.clientY - rect.top
+      xNum: xNum,
+      yNum: yNum,
+      xPos: xNum * rWidth,
+      yPos: yNum * rHeight
     };
-  }
+  };
 
-  $(this.canvas).mousemove(function (evt) {
-    var pos = getPosition(evt);
-
-    // Display highlight when hovering
-    console.log("==HOVER== x:" + pos.x + " y:" + pos.y);
+  $(this.highlightCanvas).mousemove(function (evt) {
+    highlightArea(getPosition(evt));
   });
 
-  $(this.canvas).click(function (evt) {
-    var pos = getPosition(evt);
+  $(this.highlightCanvas).mouseout(function (evt) {
+    clearOldRect();
+  });
 
-    // Change state when clicking
-    console.log("==CLICK== x:" + pos.x + " y:" + pos.y);
+  $(this.highlightCanvas).click(function (evt) {
+    selectArea(getPosition(evt));
+  });
+
+  self.model.onAreaStateUpdate(function (grid) {
+    // Toggle the correct ones
   });
 };
 
 /**
  * Set listeners for the controls
  */
-proto.setControls = function () {
+proto.setControlEvents = function () {
 };
 
 module.exports = View;

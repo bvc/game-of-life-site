@@ -138,7 +138,6 @@ gulp.task("scripts", function () {
       .pipe(sourcemaps.init({
         loadMaps: true
       }))
-      .pipe(uglify())
       .pipe(sourcemaps.write("./"))
       .pipe(gulp.dest(config.dist.scripts));
   };
