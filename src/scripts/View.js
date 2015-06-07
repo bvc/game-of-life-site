@@ -1,6 +1,7 @@
 "use strict";
 
-var $ = require("jquery");
+var $ = require("jquery"),
+  Model = require("./Model");
 
 function View (config) {
   var defaultConfig = {
@@ -26,14 +27,18 @@ proto.init = function () {
   }
 
   this.canvas = document.createElement("canvas");
-
   $canvasContainer.append(this.canvas);
+
+  this.model = new Model();
 
   this.setupCanvas();
   this.setCanvasControls();
   this.setControls();
 };
 
+/**
+ * Setup the canvas
+ */
 proto.setupCanvas = function () {
   var context = this.canvas.getContext("2d"),
     x, y, offset = 0;
@@ -55,9 +60,39 @@ proto.setupCanvas = function () {
   context.stroke();
 };
 
+/**
+ * Set listeners for canvas
+ */
 proto.setCanvasControls = function () {
+  var self = this;
+
+  function getPosition(evt) {
+    var rect = self.canvas.getBoundingClientRect();
+
+    return {
+      x: evt.clientX - rect.left,
+      y: evt.clientY - rect.top
+    };
+  }
+
+  $(this.canvas).mousemove(function (evt) {
+    var pos = getPosition(evt);
+
+    // Display highlight when hovering
+    console.log("==HOVER== x:" + pos.x + " y:" + pos.y);
+  });
+
+  $(this.canvas).click(function (evt) {
+    var pos = getPosition(evt);
+
+    // Change state when clicking
+    console.log("==CLICK== x:" + pos.x + " y:" + pos.y);
+  });
 };
 
+/**
+ * Set listeners for the controls
+ */
 proto.setControls = function () {
 };
 
