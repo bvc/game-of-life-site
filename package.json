@@ -2,13 +2,12 @@
   "name": "game-of-life-site",
   "version": "0.0.1",
   "description": "Conway's game of life",
-  "main": "index.js",
   "scripts": {
     "start": "echo \"Error: no start specified\" && exit 1",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Brian Cobarrubia",
-  "license": "ISC",
+  "license": "MIT",
   "devDependencies": {
     "browser-sync": "^2.7.0",
     "browserify": "^13.0.0",
@@ -44,5 +43,9 @@
   },
   "browserify-shim": {
     "jquery": "global:$"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/bvc/game-of-life-site"
   }
 }
