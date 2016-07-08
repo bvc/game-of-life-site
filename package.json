@@ -4,9 +4,12 @@
   "description": "Conway's game of life",
   "scripts": {
     "start": "echo \"Error: no start specified\" && exit 1",
+    "lint": "esw webpack.config.* src bin --color",
+    "clean-dist": "npm run remove-dist && mkdir dist",
+    "remove-dist": "rimraf ./dist",
     "test": "mocha bin/test-setup.js \"src/**/*.spec.js\" --reporter progress"
   },
-  "author": "Brian Cobarrubia",
+  "author": "bvc",
   "license": "MIT",
   "devDependencies": {
     "babel-cli": "6.10.1",
@@ -19,6 +22,9 @@
     "browserify-shim": "^3.8.8",
     "chai": "3.5.0",
     "del": "^2.2.0",
+    "eslint": "3.0.1",
+    "eslint-plugin-import": "1.10.2",
+    "eslint-watch": "2.1.13",
     "expectations": "^0.5.2",
     "front-matter": "^2.0.5",
     "gulp": "^3.8.11",
@@ -35,6 +41,8 @@
     "gulp-util": "^3.0.4",
     "jshint-stylish": "^2.1.0",
     "mocha": "2.5.3",
+    "npm-run-all": "2.3.0",
+    "rimraf": "2.5.3",
     "run-sequence": "^1.1.0",
     "sinon": "1.17.4",
     "sinon-chai": "2.8.0",
