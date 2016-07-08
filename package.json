@@ -7,10 +7,6 @@
     "start": "echo \"Error: no start specified\" && exit 1",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "engines": {
-    "node": "~0.12.2",
-    "npm": "~2.7.5"
-  },
   "author": "Brian Cobarrubia",
   "license": "ISC",
   "devDependencies": {
