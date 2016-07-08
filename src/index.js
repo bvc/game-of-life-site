@@ -5,7 +5,7 @@ import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
 
 $(() => {
   new GameComponent({
-    canvasContainerSelector: ".canvas-container",
-    controlContainerSelector: "#controls"
+    canvasContainerSelector: '.canvas-container',
+    controlContainerSelector: '#controls'
   });
 });

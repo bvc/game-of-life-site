@@ -1,12 +1,12 @@
-"use strict";
+'use strict';
 
 import $ from 'jquery';
 import Model from '../models/game-state';
 
 function GameComponent (config) {
   let defaultConfig = {
-    canvasContainerSelector: "",
-    controlContainerSelector: "",
+    canvasContainerSelector: '',
+    controlContainerSelector: '',
     width: 700,
     height: 400,
     rectWidth: 10,
@@ -27,7 +27,7 @@ proto.init = function () {
   let $canvasContainer = $(this.props.canvasContainerSelector);
 
   if ($canvasContainer.length !== 1) {
-    throw new Error("The element doesn't exist");
+    throw new Error('The element doesn\'t exist');
   }
 
   this.$canvasContainer = $canvasContainer;
@@ -53,12 +53,12 @@ proto.setupCanvas = function () {
   let self = this,
     cxt, x, y, offset = 0;
 
-  ["gridCanvas", "selectCanvas", "highlightCanvas"].forEach(function (canvasName, idx) {
-    let canvasEl = self[canvasName] = document.createElement("canvas");
+  ['gridCanvas', 'selectCanvas', 'highlightCanvas'].forEach(function (canvasName, idx) {
+    let canvasEl = self[canvasName] = document.createElement('canvas');
 
     canvasEl.width = self.props.width;
     canvasEl.height = self.props.height;
-    canvasEl.style.position = "absolute";
+    canvasEl.style.position = 'absolute';
     canvasEl.style.left = 0;
     canvasEl.style.top = 0;
     canvasEl.style.zIndex = idx;
@@ -66,7 +66,7 @@ proto.setupCanvas = function () {
     self.$canvasContainer.append(canvasEl);
   });
 
-  cxt = this.gridCanvas.getContext("2d");
+  cxt = this.gridCanvas.getContext('2d');
 
   for (x = 0; x <= this.props.width; x += this.props.rectWidth) {
     cxt.moveTo(x + offset, offset);
@@ -78,7 +78,7 @@ proto.setupCanvas = function () {
     cxt.lineTo(this.props.width + offset, y + offset);
   }
 
-  cxt.strokeStyle = "black";
+  cxt.strokeStyle = 'black';
   cxt.stroke();
 };
 
@@ -87,8 +87,8 @@ proto.setupCanvas = function () {
  */
 proto.setCanvasEvents = function () {
   let self = this,
-    hightlightCxt = self.highlightCanvas.getContext("2d"),
-    selectCxt = self.selectCanvas.getContext("2d"),
+    hightlightCxt = self.highlightCanvas.getContext('2d'),
+    selectCxt = self.selectCanvas.getContext('2d'),
     rWidth = self.props.rectWidth,
     rHeight = self.props.rectHeight,
     oldRect;
@@ -102,7 +102,7 @@ proto.setCanvasEvents = function () {
   let highlightArea = function (coor) {
     clearOldRect();
 
-    hightlightCxt.fillStyle = "#7ec0ee";
+    hightlightCxt.fillStyle = '#7ec0ee';
     hightlightCxt.fillRect(coor.xPos, coor.yPos, rWidth, rHeight);
 
     oldRect = coor;
@@ -114,7 +114,7 @@ proto.setCanvasEvents = function () {
     let currentState = self.model.getAreaState(coor.xNum, coor.yNum);
 
     if (currentState) {
-      selectCxt.fillStyle = "#000080";
+      selectCxt.fillStyle = '#000080';
       selectCxt.fillRect(coor.xPos, coor.yPos, rWidth, rHeight);
     } else {
       selectCxt.clearRect(coor.xPos, coor.yPos, rWidth, rHeight);
@@ -125,7 +125,7 @@ proto.setCanvasEvents = function () {
     for (let x = 0; x < grid.length; x++) {
       for (let y = 0; y < grid[0].length; y++) {
         if (grid[x][y]) {
-          selectCxt.fillStyle = "#000080";
+          selectCxt.fillStyle = '#000080';
           selectCxt.fillRect(x * rWidth, y * rHeight, rWidth, rHeight);
         } else {
           selectCxt.clearRect(x * rWidth, y * rHeight, rWidth, rHeight);
@@ -171,28 +171,28 @@ proto.setCanvasEvents = function () {
  */
 proto.setControlEvents = function () {
   let self = this,
-    $play = this.$controls.find(".play"),
-    $pause = this.$controls.find(".pause");
+    $play = this.$controls.find('.play'),
+    $pause = this.$controls.find('.pause');
 
   $play.click(function () {
-    $play.prop("disabled", true);
-    $pause.prop("disabled", false);
+    $play.prop('disabled', true);
+    $pause.prop('disabled', false);
 
     self.model.play();
   });
 
   $pause.click(function () {
-    $play.prop("disabled", false);
-    $pause.prop("disabled", true);
+    $play.prop('disabled', false);
+    $pause.prop('disabled', true);
 
     self.model.pause();
   });
 
-  this.$controls.find(".step-forward").click(function () {
+  this.$controls.find('.step-forward').click(function () {
     self.model.stepForward();
   });
 
-  this.$controls.find(".reset").click(function () {
+  this.$controls.find('.reset').click(function () {
     self.model.reset();
   });
 };
