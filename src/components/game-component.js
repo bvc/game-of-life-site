@@ -1,9 +1,9 @@
 "use strict";
 
-var $ = require("jquery"),
-  Model = require("./Model");
+import $ from 'jquery';
+import Model from '../models/game-state';
 
-function View (config) {
+function GameComponent (config) {
   var defaultConfig = {
     canvasContainerSelector: "",
     controlContainerSelector: "",
@@ -18,7 +18,7 @@ function View (config) {
   this.init();
 }
 
-var proto = View.prototype;
+var proto = GameComponent.prototype;
 
 /**
  * Initialize the canvas layering and model
@@ -197,4 +197,4 @@ proto.setControlEvents = function () {
   });
 };
 
-module.exports = View;
+export default GameComponent;

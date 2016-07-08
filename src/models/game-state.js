@@ -1,6 +1,4 @@
-"use strict";
-
-function Model (config) {
+function GameState (config) {
   this.config = config;
   this.init();
 }
@@ -12,7 +10,7 @@ var X_OFFSETS = [-1, 0, 1, -1, 1, -1, 0, 1],
   Y_OFFSETS = [-1, -1, -1, 0, 0, 1, 1, 1],
   OFFSETS_LENGTH = X_OFFSETS.length;
 
-var proto = Model.prototype;
+var proto = GameState.prototype;
 
 /**
  * Creates an n-dimensional array
@@ -180,4 +178,4 @@ proto.playThrough = function () {
   }, 100);
 };
 
-module.exports = Model;
+export default GameState;
