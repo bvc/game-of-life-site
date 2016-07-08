@@ -5,6 +5,7 @@
   "scripts": {
     "start": "babel-node bin/dev-server.js",
     "lint": "esw webpack.config.* src bin --color",
+    "lint:watch": "npm run lint -- --watch",
     "clean-dist": "npm run remove-dist && mkdir dist",
     "remove-dist": "rimraf ./dist",
     "test": "mocha bin/test-setup.js \"src/**/*.spec.js\" --reporter progress"

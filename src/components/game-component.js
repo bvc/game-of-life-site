@@ -4,7 +4,7 @@ import $ from 'jquery';
 import Model from '../models/game-state';
 
 function GameComponent (config) {
-  var defaultConfig = {
+  let defaultConfig = {
     canvasContainerSelector: "",
     controlContainerSelector: "",
     width: 700,
@@ -18,13 +18,13 @@ function GameComponent (config) {
   this.init();
 }
 
-var proto = GameComponent.prototype;
+let proto = GameComponent.prototype;
 
 /**
  * Initialize the canvas layering and model
  */
 proto.init = function () {
-  var $canvasContainer = $(this.props.canvasContainerSelector);
+  let $canvasContainer = $(this.props.canvasContainerSelector);
 
   if ($canvasContainer.length !== 1) {
     throw new Error("The element doesn't exist");
@@ -50,11 +50,11 @@ proto.init = function () {
  * Setup the gridCanvas, selectCanvas, and highlightCanvas layering
  */
 proto.setupCanvas = function () {
-  var self = this,
+  let self = this,
     cxt, x, y, offset = 0;
 
   ["gridCanvas", "selectCanvas", "highlightCanvas"].forEach(function (canvasName, idx) {
-    var canvasEl = self[canvasName] = document.createElement("canvas");
+    let canvasEl = self[canvasName] = document.createElement("canvas");
 
     canvasEl.width = self.props.width;
     canvasEl.height = self.props.height;
@@ -86,20 +86,20 @@ proto.setupCanvas = function () {
  * Set listeners for highlighting and selection
  */
 proto.setCanvasEvents = function () {
-  var self = this,
+  let self = this,
     hightlightCxt = self.highlightCanvas.getContext("2d"),
     selectCxt = self.selectCanvas.getContext("2d"),
     rWidth = self.props.rectWidth,
     rHeight = self.props.rectHeight,
     oldRect;
 
-  var clearOldRect = function () {
+  let clearOldRect = function () {
     if (oldRect) {
       hightlightCxt.clearRect(oldRect.xPos, oldRect.yPos, rWidth, rHeight);
     }
   };
 
-  var highlightArea = function (coor) {
+  let highlightArea = function (coor) {
     clearOldRect();
 
     hightlightCxt.fillStyle = "#7ec0ee";
@@ -108,12 +108,12 @@ proto.setCanvasEvents = function () {
     oldRect = coor;
   };
 
-  var toggleSelectArea = function (coor) {
+  let toggleSelectArea = function (coor) {
     self.model.toggleAreaState(coor.xNum, coor.yNum);
 
-    var currentState = self.model.getAreaState(coor.xNum, coor.yNum);
+    let currentState = self.model.getAreaState(coor.xNum, coor.yNum);
 
-    if (!!currentState) {
+    if (currentState) {
       selectCxt.fillStyle = "#000080";
       selectCxt.fillRect(coor.xPos, coor.yPos, rWidth, rHeight);
     } else {
@@ -121,9 +121,9 @@ proto.setCanvasEvents = function () {
     }
   };
 
-  var updateSelectArea = function (grid) {
-    for (var x = 0; x < grid.length; x++) {
-      for (var y = 0; y < grid[0].length; y++) {
+  let updateSelectArea = function (grid) {
+    for (let x = 0; x < grid.length; x++) {
+      for (let y = 0; y < grid[0].length; y++) {
         if (grid[x][y]) {
           selectCxt.fillStyle = "#000080";
           selectCxt.fillRect(x * rWidth, y * rHeight, rWidth, rHeight);
@@ -134,8 +134,8 @@ proto.setCanvasEvents = function () {
     }
   };
 
-  var getPosition = function (evt) {
-    var rect = self.gridCanvas.getBoundingClientRect(),
+  let getPosition = function (evt) {
+    let rect = self.gridCanvas.getBoundingClientRect(),
       x = evt.clientX - rect.left,
       y = evt.clientY - rect.top,
       xNum = Math.floor(x / rWidth),
@@ -170,7 +170,7 @@ proto.setCanvasEvents = function () {
  * Set listeners for the controls
  */
 proto.setControlEvents = function () {
-  var self = this,
+  let self = this,
     $play = this.$controls.find(".play"),
     $pause = this.$controls.find(".pause");
 

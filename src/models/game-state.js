@@ -6,11 +6,11 @@ function GameState (config) {
 /**
  * Neighbor coordinates relative to the current x and y positions
  */
-var X_OFFSETS = [-1, 0, 1, -1, 1, -1, 0, 1],
+let X_OFFSETS = [-1, 0, 1, -1, 1, -1, 0, 1],
   Y_OFFSETS = [-1, -1, -1, 0, 0, 1, 1, 1],
   OFFSETS_LENGTH = X_OFFSETS.length;
 
-var proto = GameState.prototype;
+let proto = GameState.prototype;
 
 /**
  * Creates an n-dimensional array
@@ -18,11 +18,11 @@ var proto = GameState.prototype;
  * @returns {Array}
  */
 proto.createArray = function (length) {
-  var arr = new Array(length || 0),
+  let arr = new Array(length || 0),
     i = length;
 
   if (arguments.length > 1) {
-    var args = Array.prototype.slice.call(arguments, 1);
+    let args = Array.prototype.slice.call(arguments, 1);
     while (i--) {
       arr[length - 1 - i] = this.createArray.apply(this, args);
     }
@@ -103,7 +103,7 @@ proto.reset = function () {
  * @returns {number} - Number of live neighbors
  */
 proto.numberOfLiveNeighbors = function (x, y) {
-  var numOfLiveCells = 0,
+  let numOfLiveCells = 0,
     i, neighborX, neighborY;
 
   for (i = 0; i < OFFSETS_LENGTH; i++) {
@@ -136,7 +136,7 @@ proto.numberOfLiveNeighbors = function (x, y) {
  * @returns {boolean} - Whether the cell should live or die in the next generation
  */
 proto.shouldLive = function (currentState, x, y) {
-  var liveNeighbors = this.numberOfLiveNeighbors(x, y);
+  let liveNeighbors = this.numberOfLiveNeighbors(x, y);
 
   if (!currentState) {
     return liveNeighbors === 3;
@@ -149,11 +149,11 @@ proto.shouldLive = function (currentState, x, y) {
  * Traverse through the grid and determine which cells live or die in the next generation
  */
 proto.nextGeneration = function () {
-  var grid = this.grid,
+  let grid = this.grid,
     nextGrid = this.createArray(this.config.x, this.config.y);
 
-  for (var x = 0; x < grid.length; x++) {
-    for (var y = 0; y < grid[0].length; y++) {
+  for (let x = 0; x < grid.length; x++) {
+    for (let y = 0; y < grid[0].length; y++) {
       nextGrid[x][y] = this.shouldLive(grid[x][y], x, y);
     }
   }
@@ -166,7 +166,7 @@ proto.nextGeneration = function () {
  * Plays through the next generation
  */
 proto.playThrough = function () {
-  var self = this;
+  let self = this;
 
   if (!this.isPlaying) {
     return;
