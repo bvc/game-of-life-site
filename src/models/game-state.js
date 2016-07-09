@@ -179,5 +179,3 @@ export default class GameState {
     }, 100);
   }
 }
-
-export default GameState;
