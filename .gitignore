@@ -123,7 +123,7 @@ build/Release
 node_modules
 
 # Project
-dist/*
+dist/
 
 # Temp folder
 .tmp/*

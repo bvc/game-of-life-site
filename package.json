@@ -8,6 +8,9 @@
     "lint:watch": "npm run lint -- --watch",
     "clean-dist": "npm run remove-dist && mkdir dist",
     "remove-dist": "rimraf ./dist",
+    "open:prod": "babel-node bin/prod-server.js",
+    "prebuild": "npm run clean-dist",
+    "build": "babel-node bin/build.js && npm run open:prod",
     "test": "mocha bin/test-setup.js \"src/**/*.spec.js\" --reporter progress"
   },
   "author": "bvc",
@@ -24,6 +27,7 @@
     "eslint": "3.0.1",
     "eslint-plugin-import": "1.10.2",
     "eslint-watch": "2.1.13",
+    "extract-text-webpack-plugin": "1.0.1",
     "file-loader": "0.9.0",
     "html-webpack-plugin": "2.22.0",
     "mocha": "2.5.3",
