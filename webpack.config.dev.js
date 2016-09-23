@@ -26,7 +26,7 @@ export default {
     new webpack.HotModuleReplacementPlugin(),
     new webpack.NoErrorsPlugin(),
     new HtmlWebpackPlugin({
-      template: 'src/index.ejs.html',
+      template: 'src/index.html',
       minify: {
         removeComments: true,
         collapseWhitespace: true
