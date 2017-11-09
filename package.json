@@ -6,6 +6,8 @@
   "license": "MIT",
   "scripts": {
     "start": "babel-node tools/src-server.js",
+    "lint": "esw webpack.config.* src tools --color",
+    "lint:watch": "npm run lint -- --watch",
     "remove-dist": "rimraf ./dist",
     "clean-dist": "npm run remove-dist && mkdir dist",
     "prebuild": "npm run clean-dist",
