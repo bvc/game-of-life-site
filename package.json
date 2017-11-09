@@ -13,7 +13,10 @@
     "open:src": "babel-node tools/src-server.js",
     "open:dist": "babel-node tools/dist-server.js"
   },
-  "dependencies": {},
+  "dependencies": {
+    "bootstrap": "3.3.7",
+    "jquery": "3.2.1"
+  },
   "devDependencies": {
     "ajv": "5.3.0",
     "autoprefixer": "7.1.6",
@@ -37,6 +40,7 @@
     "postcss-loader": "2.0.8",
     "rimraf": "2.6.2",
     "sass-loader": "6.0.6",
+    "style-loader": "0.19.0",
     "url-loader": "0.6.2",
     "webpack": "3.8.1",
     "webpack-dev-middleware": "1.12.0",
