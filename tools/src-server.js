@@ -21,7 +21,7 @@ browserSync({
 
       webpackDevMiddleware(bundler, {
         publicPath: config.output.publicPath,
-        noInfo: true,
+        logLevel: 'info',
         quiet: false,
         stats: {
           assets: false,
