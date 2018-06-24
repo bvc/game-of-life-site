@@ -18,6 +18,7 @@ export default {
     publicPath: '/',
     filename: 'bundle.js'
   },
+  mode: 'development',
   plugins: [
     new webpack.DefinePlugin({
       'process.env.NODE_ENV': JSON.stringify('development'),
@@ -28,9 +29,9 @@ export default {
 
     new webpack.NoEmitOnErrorsPlugin(),
 
-    // Add appConfig to flag or toggle template variables
     new HtmlWebpackPlugin({
       template: 'src/index.ejs',
+      favicon: 'src/favicon.ico',
       minify: {
         removeComments: true,
         collapseWhitespace: true
@@ -40,13 +41,6 @@ export default {
   ],
   module: {
     rules: [
-      {
-        test: /\.jsx?$/,
-        exclude: /node_modules/,
-        use: [
-          'babel-loader'
-        ]
-      },
       {
         test: /\.eot(\?v=\d+.\d+.\d+)?$/,
         use: [
@@ -101,16 +95,7 @@ export default {
         ]
       },
       {
-        test: /\.css$/,
-        include: /node_modules/,
-        use: [
-          'style-loader',
-          'css-loader'
-        ]
-      },
-      {
         test: /(\.css|\.scss|\.sass)$/,
-        exclude: /node_modules/,
         use: [
           'style-loader',
           {

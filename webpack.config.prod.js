@@ -1,5 +1,5 @@
 import webpack from 'webpack';
-import ExtractTextPlugin from 'extract-text-webpack-plugin';
+import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 import WebpackMd5Hash from 'webpack-md5-hash';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 import path from 'path';
@@ -11,7 +11,7 @@ const GLOBALS = {
 
 export default {
   resolve: {
-    extensions: ['*', '.js', '.jsx', '.json']
+    extensions: ['*', '.js', '.json']
   },
   devtool: 'source-map',
   entry: path.resolve(__dirname, 'src/index'),
@@ -21,14 +21,19 @@ export default {
     publicPath: '/',
     filename: '[name].[chunkhash].js'
   },
+  mode: 'production',
   plugins: [
     // Hash files with md5 to update for content changes
     new WebpackMd5Hash(),
 
+    // Build react in prod mode
     new webpack.DefinePlugin(GLOBALS),
 
     // Generate an external css file
-    new ExtractTextPlugin('[name].[contenthash].css'),
+    new MiniCssExtractPlugin({
+      filename: '[name].[contenthash].css',
+      chunkFilename: '[name].css'
+    }),
 
     // Generate an HTML file that references the generated bundles
     new HtmlWebpackPlugin({
@@ -47,20 +52,10 @@ export default {
         minifyURLs: true
       },
       inject: true
-    }),
-
-    // Minify JS
-    new webpack.optimize.UglifyJsPlugin({
-      sourceMap: true
     })
   ],
   module: {
     rules: [
-      {
-        test: /\.jsx?$/,
-        exclude: /node_modules/,
-        use: ['babel-loader']
-      },
       {
         test: /\.eot(\?v=\d+.\d+.\d+)?$/,
         use: [
@@ -123,43 +118,34 @@ export default {
         ]
       },
       {
-        test: /\.css$/,
-        include: /node_modules/,
-        use: [
-          'style-loader',
-          'css-loader'
-        ]
-      },
-      {
         test: /(\.css|\.scss|\.sass)$/,
-        exclude: /node_modules/,
-        use: ExtractTextPlugin.extract({
-          use: [
-            {
-              loader: 'css-loader',
-              options: {
-                minimize: true,
-                sourceMap: true
-              }
-            },
-            {
-              loader: 'postcss-loader',
-              options: {
-                plugins: () => [
-                  require('autoprefixer')
-                ],
-                sourceMap: true
-              }
-            },
-            {
-              loader: 'sass-loader',
-              options: {
-                includePaths: [path.resolve(__dirname, 'src', 'scss')],
-                sourceMap: true
-              }
+        use: [
+          MiniCssExtractPlugin.loader,
+          {
+            loader: 'css-loader',
+            options: {
+              minimize: true,
+              sourceMap: true,
+              importLoader: 2
             }
-          ]
-        })
+          },
+          {
+            loader: 'postcss-loader',
+            options: {
+              plugins: () => [
+                require('autoprefixer')
+              ],
+              sourceMap: true
+            }
+          },
+          {
+            loader: 'sass-loader',
+            options: {
+              includePaths: [path.resolve(__dirname, 'src', 'scss')],
+              sourceMap: true
+            }
+          }
+        ]
       }
     ]
   }
