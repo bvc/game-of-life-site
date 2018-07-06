@@ -4,7 +4,7 @@ import path from 'path';
 
 export default {
   resolve: {
-    extensions: ['*', '.js', '.jsx', '.json']
+    extensions: ['*', '.js', '.json']
   },
   devtool: 'cheap-module-eval-source-map',
   target: 'web',
